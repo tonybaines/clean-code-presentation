@@ -50,7 +50,7 @@ asciidoctor {
 	}
 
 	resources {
-		from (sourceDir) {
+		from ('src/resources') {
 			include 'images/**'
 		}
 		from (downloadDir) {
@@ -59,8 +59,6 @@ asciidoctor {
 	}
 
 	backends    'revealjs'
-
-	gemPath 'gems'
 
 	attributes	'build-gradle': file('build.gradle'),
 		'sourcedir': project.sourceSets.main.java.srcDirs[0],
@@ -83,5 +81,5 @@ asciidoctor {
 }
 
 wrapper {
-	gradleVersion = '2.5'
+	gradleVersion = '2.7'
 }
