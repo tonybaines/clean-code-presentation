@@ -4,5 +4,8 @@
 ifndef::imagesdir[:imagesdir: images]
 ifndef::sourcedir[:sourcedir: ../java]
 
-git remote add origin git@github.com:tonybaines/clean-code-presentation.git
-git push -u origin master
+== What Makes Code 'clean' ?
+
+== Clean Code and Refactoring
+
+=== What is Refactoring

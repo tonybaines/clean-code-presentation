@@ -9,7 +9,6 @@ plugins {
 	id 'com.github.jruby-gradle.base' version '0.1.5'
 }
 
-apply plugin: 'com.github.jruby-gradle.base'
 apply plugin: 'org.ysb33r.vfs'
 apply plugin: 'java'
 apply plugin: 'org.asciidoctor.convert'
@@ -26,11 +25,6 @@ ext {
 
 repositories {
 	jcenter()
-}
-
-dependencies {
-	gems 'rubygems:slim:2.1.0'
-	gems 'rubygems:thread_safe:0.3.4'
 }
 
 task download << {
@@ -51,10 +45,8 @@ download {
 
 asciidoctor {
 
-	dependsOn jrubyPrepareGems
-
 	sources {
-		include 'junit-introduction.adoc'
+		include 'clean-code.adoc'
 	}
 
 	resources {
@@ -67,6 +59,8 @@ asciidoctor {
 	}
 
 	backends    'revealjs'
+
+	gemPath 'gems'
 
 	attributes	'build-gradle': file('build.gradle'),
 		'sourcedir': project.sourceSets.main.java.srcDirs[0],
