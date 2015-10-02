@@ -6,6 +6,187 @@ ifndef::sourcedir[:sourcedir: ../java]
 
 == What Makes Code 'clean' ?
 
+image:clean-code-book.jpeg[width=350]
+
+2008
+
+=== Encapsulation
+* API hides implementation details
+* Follows the Interface Segregation principle (one role)
+
+image:alarm_ringing-512.png[width=30]
+
+* Watch out for
+** big APIs (many public methods)
+
+=== Cohesion (method and class scope)
+* Low ‘concept-count’ – Single Responsibility principle
+
+image:alarm_ringing-512.png[width=30]
+
+* Watch out for
+** Generic/bland class & method names
+** Awkward class & method names
+** Many arguments to a function
+** Many fields
+** Long classes/methods
+
+=== Coupling
+* Law of Demeter
+* Open Closed principle
+* Dependency Inversion principle
+
+image:alarm_ringing-512.png[width=30]
+
+* Watch out for
+** Circular dependencies
+** Many dependencies
+** Inheritance for reusability (coupling between parent & children)
+
+=== Redundancy
+* One place for every concept
+
+
+image:alarm_ringing-512.png[width=30]
+
+* Watch out for
+** Copy-and-paste reuse
+
+=== Clarity
+* Good naming
+* Command / query separation
+* Obviousness
+
+image:alarm_ringing-512.png[width=30]
+
+* Watch out for
+** Long methods & classes
+** Short variable names
+** Deep nesting
+
+
 == Clean Code and Refactoring
 
+image:refactoring-book.jpeg[width=350]
+
+1999
+
 === What is Refactoring
+
+_noun_: a change made to the internal structure of software +
+to make it *easier to understand* and *cheaper to modify* +
+without changing its *observable behavior*
+
+
+_verb_: to restructure software by applying a series of
+refactorings without changing its observable behavior
+
+
+=== What is Refactoring
+
+"a disciplined technique for *restructuring* an existing +
+body of code, altering its *internal structure* without +
+changing its *external behavior*.
+
+Its heart is a series of *small* behavior preserving +
+transformations. Each transformation ... +
+does little, but a sequence of transformations can produce +
+a *significant restructuring*."
+
+=== Code 'Smells'
+
+Hints that something _may_ be wrong with the design
+
+=== Simple structural problems
+* Long Method/Class
+* Duplicated Code
+* Conditional Complexity
+* Dead Code
+
+=== Inheritance & Encapsulation
+* Refused Bequest
+** Inherited methods that aren't used
+* Inappropriate Intimacy
+**  Classes should know as little as possible about each other.
+* Indecent Exposure
+** refactor classes to minimize their public surface
+* Feature Envy
+** Methods that make extensive use of another class may belong in another class.
+
+=== Refactorings
+
+http://refactoring.com/catalog/
+
+=== Structural Fixes
+
+* Extract Method
+* Extract Variable
+* Extract Interface
+* Pull up/Push down
+* Renames
+
+* The IDE will do these for you (safely)
+
+=== Replace Conditional with Polymorphism
+
+[source]
+-----
+double getSpeed() {
+  switch (_type) {
+    case EUROPEAN:
+      return getBaseSpeed();
+    case AFRICAN:
+      return getBaseSpeed() - getLoadFactor() * _numberOfCoconuts;
+    case NORWEGIAN_BLUE:
+      return (_isNailed) ? 0 : getBaseSpeed(_voltage);
+  }
+  throw new RuntimeException ("Should be unreachable");
+}
+-----
+
+=== Replace Conditional with Polymorphism
+image:class-diagram-polymorphism.jpeg[]
+
+== Design Patterns
+
+image:design-patterns-book.jpeg[width=350]
+
+1994
+
+== Design Patterns
+_"a general repeatable solution to a commonly occurring problem in software design."_
+
+* A common vocabulary
+* A destination for a refactoring
+
+=== Creational
+
+* Factories
+** Encapsulate the knowledge of how to build different variations of a type
+* Builders
+** Encapsulate how to assemble families of related objects
+* Singleton
+** Manage the lifecycle of expensive or scarce resources
+** Doesn't need to be global shared state
+
+=== Structural
+* Adaptor
+** Translate between different protocols (encapsulate the differences)
+* Facade
+** Hide a complex API behind a simpler one
+* Decorator
+** Wrap one object in another of the same type and add behaviour
+** Java IO libraries
+* Composite
+** Homogeneous tree structures e.g. Files/Directories
+
+=== Behavioural
+* State
+** Encapsulate differences in behaviour into objects
+** Common refactoring for big conditional blocks
+** Runtime re-composition
+* Strategy
+** Encapsulate different algorithms
+* Iterator
+** Encapsulate how to traverse a structure
+** Built in to most languages
