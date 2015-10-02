@@ -72,7 +72,7 @@ image:refactoring-book.jpeg[width=350]
 1999
 
 === What is Refactoring
-
+[%step]
 _noun_: a change made to the internal structure of software +
 to make it *easier to understand* and *cheaper to modify* +
 without changing its *observable behavior*
@@ -83,7 +83,7 @@ refactorings without changing its observable behavior
 
 
 === What is Refactoring
-
+[%step]
 "a disciplined technique for *restructuring* an existing +
 body of code, altering its *internal structure* without +
 changing its *external behavior*.
@@ -153,7 +153,8 @@ image:design-patterns-book.jpeg[width=350]
 
 1994
 
-== Design Patterns
+=== Design Patterns
+[%step]
 _"a general repeatable solution to a commonly occurring problem in software design."_
 
 * A common vocabulary
@@ -190,3 +191,9 @@ _"a general repeatable solution to a commonly occurring problem in software desi
 * Iterator
 ** Encapsulate how to traverse a structure
 ** Built in to most languages
+
+== Closing Thoughts
+[%step]
+* There are *simple criteria* we can apply to the code we write to help us judge how *maintainable* it is
+* Code evolves as features are added and requirements become clear, *constant refactoring* helps keep our code clean
+* The problems we try to solve are both new and old at the same time, *design patterns* help to guide the design
