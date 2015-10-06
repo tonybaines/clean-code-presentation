@@ -209,8 +209,17 @@ _"a general repeatable solution to a commonly occurring problem in software desi
 
 == Reading List
 
-* *Clean Code* [Robert C. Martin & others; Prentice Hall ISBN: 978-0-13-235088-4]
-* *Refactoring* [Martin Fowler; Addison Wesley ISBN: 978-0-201-48567-7]
-* *Head First Design Patterns* [Eric Freeman, Elisabeth Freeman, Kathy Sierra, and Bert Bates; O’Reilly ISBN: 978-0-596-00712-6
-* *Refactoring to Patterns* [Joshua Kerievsky; Addison Wesley ISBN: 0-321-21335-1
-* *Emergent Design* [Scott L. Bain; Addison Wesley ISBN: 0-321-50936-6]
+* *Clean Code* - _Robert C. Martin & others; Prentice Hall_
+* *Refactoring* - _Martin Fowler; Addison Wesley_
+* *Head First Design Patterns* - _Eric Freeman, Elisabeth Freeman, Kathy Sierra, and Bert Bates; O’Reilly_
+* *Refactoring to Patterns* - _Joshua Kerievsky; Addison Wesley_
+* *Emergent Design* - _Scott L. Bain; Addison Wesley_
+
+== Checklist
+
+* *Size* - _small classes (=< 500 LoC), methods (=< 20 LoC)_
+* *Encapsulation* - _minimum public 'surface', hide implementation details, don't share data, expose operations_
+* *Cohesion* - _one major responsibility_
+* *Coupling* - _low dependency count, no temporal coupling (e.g. ```Thread.sleep()```), inheritance is for 'is-a' relationships_
+* *Redundancy* - _no copy-and-paste, one place to update each concept_
+* *Clarity* - _good names, no surprises, obvious, short_
