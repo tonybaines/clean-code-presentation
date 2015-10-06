@@ -4,11 +4,17 @@
 ifndef::imagesdir[:imagesdir: images]
 ifndef::sourcedir[:sourcedir: ../java]
 
+== Why Does Clean Code Matter?
+* The compiler doesn't care about clean code, *people* do
+* Code is read and updated *many* more times than it's written
+* Clean code is easier to *read*, easier to *reason about*, and easier to *test*
+
 == What Makes Code 'clean' ?
 
 image:clean-code-book.jpeg[width=350]
 
 2008
+
 
 === Encapsulation
 * API hides implementation details
@@ -90,7 +96,7 @@ changing its *external behavior*.
 
 Its heart is a series of *small* behavior preserving +
 transformations. Each transformation ... +
-does little, but a sequence of transformations can produce +
+does little, but a *sequence* of transformations can produce +
 a *significant restructuring*."
 
 === Code 'Smells'
@@ -194,6 +200,17 @@ _"a general repeatable solution to a commonly occurring problem in software desi
 
 == Closing Thoughts
 [%step]
+* Clean code is about making our jobs as programmers *easier*
 * There are *simple criteria* we can apply to the code we write to help us judge how *maintainable* it is
 * Code evolves as features are added and requirements become clear, *constant refactoring* helps keep our code clean
 * The problems we try to solve are both new and old at the same time, *design patterns* help to guide the design
+
+== Questions?
+
+== Reading List
+
+* *Clean Code* [Robert C. Martin & others; Prentice Hall ISBN: 978-0-13-235088-4]
+* *Refactoring* [Martin Fowler; Addison Wesley ISBN: 978-0-201-48567-7]
+* *Head First Design Patterns* [Eric Freeman, Elisabeth Freeman, Kathy Sierra, and Bert Bates; O’Reilly ISBN: 978-0-596-00712-6
+* *Refactoring to Patterns* [Joshua Kerievsky; Addison Wesley ISBN: 0-321-21335-1
+* *Emergent Design* [Scott L. Bain; Addison Wesley ISBN: 0-321-50936-6]
