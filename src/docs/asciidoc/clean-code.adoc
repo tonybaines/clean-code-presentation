@@ -24,6 +24,34 @@ image:alarm_ringing-512.png[width=30]
 
 * Watch out for
 ** big APIs (many public methods)
+** internal data structures visible/modifiable
+
+=== Encapsulation :(
+[source,java]
+-----
+public class AllTheData {
+  public Map getCache() {...}
+  public Map setCache() {...}
+  public List getSqlQueries() {...}
+  public boolean isCacheInitialised() {...}
+  public boolean setCacheInitialised(boolean b) {...}
+}
+-----
+* Implementation details exposed (can't be changed easily)
+* No operations on the data (all changes driven by client code)
+* More than one role
+
+=== Encapsulation :)
+[source,java]
+-----
+public class EncapsulatedCache<T> {
+  public T get(String key) throws CacheMissException {...}
+  public void put(String key, T value) {...}
+  public boolean isInitialised() {...}
+}
+-----
+* Hides the implementation (could be a Map, could be a database table)
+* API focused on doing one job
 
 === Cohesion (method and class scope)
 * Low ‘concept-count’ – Single Responsibility principle
@@ -37,10 +65,48 @@ image:alarm_ringing-512.png[width=30]
 ** Many fields
 ** Long classes/methods
 
+=== Cohesion :(
+[source,java]
+-----
+public class DataAndSettingsManagerUtils {
+  private Map data = new HashMap();
+  private Map settings = new HashMap();
+  private int updateCount =0;
+  private static final String SEP="-"
+  ...
+
+  public void updateData(...) {...}
+  public void loadSettings() {...}
+  public void loadInitialData() {...}
+  public static Exception translateException(Exception e) {...}
+  ...
+  public static String prettyPrint(Map data) {...}
+}
+-----
+* Not a meaningful class name (warning sign)
+* Multiple roles
+
+=== Cohesion :)
+[source,java]
+-----
+public class HealthStatus {
+    private final List substatuses;
+    public HealthStatus(HealthStatus ... substatuses) {...}
+    public Level getLevel() {...}
+    public String getReason() {...}
+    public String relatingTo() {...}
+}
+-----
+* Does one thing
+* Small API
+
+
 === Coupling
 * Law of Demeter
-* Open Closed principle
 * Dependency Inversion principle
+** High-level modules should not depend on low-level modules. Both should depend on abstractions.
+** Abstractions should not depend on details. Details should depend on abstractions.
+
 
 image:alarm_ringing-512.png[width=30]
 
@@ -49,9 +115,45 @@ image:alarm_ringing-512.png[width=30]
 ** Many dependencies
 ** Inheritance for reusability (coupling between parent & children)
 
+=== Coupling :(
+[source,java]
+-----
+public class GateController extends AbstractParentController {
+  private PostgresDatabase db;
+  private FileBasedConfigurationService config;
+  private HelperService helper;
+  private FileSystemScanner scanner;
+  private IRSensorArray sensors;
+  ...
+}
+-----
+* Many dependencies
+** a change in any dependency or the parent class is a potential change to the ```GateController```
+
+=== Coupling :(
+[source,java]
+-----
+controller.getScheduler().start(operation, manager.getConfiguration().lookup("TIMEOUT"))
+-----
+* Law of Demeter
+** aka "Don't talk to strangers"
+** aka train-wrecks
+* Client code is coupled to changes in the ```controller```, ```scheduler```, ```manager``` and ```configuration```
+* Very prone to ```NullPointerException```s
+
+
+=== Coupling :)
+[source,java]
+-----
+controller.schedule(operation)
+-----
+* The client is shielded from changes to anything except the ```controller```
+* Responsibility for making it work is delegated to the appropriate class
+* Need to be careful not to reduce the cohesion by creating a too-broad API
+
+
 === Redundancy
 * One place for every concept
-
 
 image:alarm_ringing-512.png[width=30]
 
@@ -69,6 +171,32 @@ image:alarm_ringing-512.png[width=30]
 ** Long methods & classes
 ** Short variable names
 ** Deep nesting
+
+=== Clarity :(
+[source,java]
+-----
+public void getSettings() {
+  this.settings.clear();
+  this.settings.reload("/etc/defaults/settings.conf")
+}
+-----
+* Surprising behaviour
+** ```get``` is a query (not a command)
+*** it *should* return a value
+*** it *should not* change state
+
+=== Clarity :)
+[source,java]
+-----
+public void reloadSettings() {
+  this.settings.clear();
+  this.settings.reload("/etc/defaults/settings.conf")
+}
+
+public String getSetting(String key) { ... }
+-----
+* The method names explain their intention
+** ```reload``` is a command
 
 
 == Clean Code and Refactoring
@@ -103,6 +231,8 @@ a *significant restructuring*."
 
 Hints that something _may_ be wrong with the design
 
+* The book has a table of 'smells' linked to suggested refactoring steps
+
 === Simple structural problems
 * Long Method/Class
 * Duplicated Code
@@ -113,11 +243,15 @@ Hints that something _may_ be wrong with the design
 * Refused Bequest
 ** Inherited methods that aren't used
 * Inappropriate Intimacy
-**  Classes should know as little as possible about each other.
+** Classes should know as little as possible about each other.
 * Indecent Exposure
 ** refactor classes to minimize their public surface
 * Feature Envy
 ** Methods that make extensive use of another class may belong in another class.
+
+=== A Similar Message
+* Prefer low coupling, high cohesion, small, simple, well encapsulated code.
+* SONAR reports most of these too
 
 === Refactorings
 
@@ -128,12 +262,12 @@ http://refactoring.com/catalog/
 * Extract Method
 * Extract Variable
 * Extract Interface
-* Pull up/Push down
+* Pull-up/Push-down
 * Renames
 
 * The IDE will do these for you (safely)
 
-=== Replace Conditional with Polymorphism
+=== Example: Replace Conditional with Polymorphism :(
 
 [source]
 -----
@@ -149,9 +283,15 @@ double getSpeed() {
   throw new RuntimeException ("Should be unreachable");
 }
 -----
+* Adding a new ```_type``` means another ```case``` block
+* Re-using logic is error-prone or impossible
+* Similar conditional logic for other operations
 
-=== Replace Conditional with Polymorphism
+=== Example: Replace Conditional with Polymorphism :)
 image:class-diagram-polymorphism.jpeg[]
+
+* Adding a new type means adding a new class (the rest of the code may be unchanged)
+* Reuse logic through inheritance or composition as appropriate
 
 == Design Patterns
 
@@ -165,6 +305,8 @@ _"a general repeatable solution to a commonly occurring problem in software desi
 
 * A common vocabulary
 * A destination for a refactoring
+* Rough templates, adapt them to the specific situation
+* Trade-off of added complexity
 
 === Creational
 
